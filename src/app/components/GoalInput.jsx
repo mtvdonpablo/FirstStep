@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 
-function GoalInput() {
+function GoalInput({ onSubmit }) {
   // send Goal to db
-  const [goal,setGoal] = useState(null);
+  const [goal, setGoal] = useState("");
 
   function handleGoal() {
-    console.log(goal)
+    console.log(goal);
+    if (!goal.trim()) return;
+    onSubmit(goal);
   }
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
