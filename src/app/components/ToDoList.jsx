@@ -1,8 +1,17 @@
 import { useState } from "react";
 
-function ToDoList({ tasks = [], onAddTask, onDeleteTask }) {
+function ToDoList() {
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem("tasks");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [input, setInput] = useState("");
   const [checked, setChecked] = useState(new Set());
+
+  function saveTasks(updated) {
+    setTasks(updated);
+    localStorage.setItem("tasks", JSON.stringify(updated));
+  }
 
   function toggleChecked(index) {
     setChecked((prev) => {
@@ -14,12 +23,20 @@ function ToDoList({ tasks = [], onAddTask, onDeleteTask }) {
 
   function handleAdd() {
     if (!input.trim()) return;
-    onAddTask(input.trim());
+    saveTasks([...tasks, input.trim()]);
     setInput("");
   }
 
   function handleKeyDown(e) {
     if (e.key === "Enter") handleAdd();
+  }
+
+  function handleDelete(index) {
+    saveTasks(tasks.filter((_, i) => i !== index));
+  }
+
+  function handlePrioritize() {
+    // AI prioritization coming soon
   }
 
   return (
@@ -69,7 +86,7 @@ function ToDoList({ tasks = [], onAddTask, onDeleteTask }) {
                 {task}
               </span>
               <button
-                onClick={() => onDeleteTask(index)}
+                onClick={() => handleDelete(index)}
                 className="text-neutral-300 hover:text-red-400 transition text-lg leading-none"
               >
                 ×
@@ -78,6 +95,13 @@ function ToDoList({ tasks = [], onAddTask, onDeleteTask }) {
           ))
         )}
       </ul>
+
+      <button
+        onClick={handlePrioritize}
+        className="mt-6 w-full rounded-2xl border border-neutral-200 bg-white/60 px-6 py-3 text-sm font-semibold text-[var(--foreground)] hover:border-neutral-400 active:scale-[0.98] transition shadow-sm"
+      >
+        Prioritize
+      </button>
     </div>
   );
 }
