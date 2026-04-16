@@ -1,0 +1,10 @@
+CREATE TABLE goals (
+    goal_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    due_date DATE,
+    completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_by UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+    priority INTEGER DEFAULT 0
+);
