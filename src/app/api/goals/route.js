@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
-import { getUser } from '@/utils/GetUser'
+import { getUser } from '@/utils/getUser'
 // Create a new goal
 export async function POST(request) {
   const { supabase, user } = await getUser()
