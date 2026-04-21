@@ -1,4 +1,3 @@
-import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { getUser } from '@/utils/getUser'
 // Create a new goal
