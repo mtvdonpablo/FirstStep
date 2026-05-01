@@ -18,8 +18,8 @@ export async function POST(request) {
       priority,
       user_id: user.id,
     })
-    .select()
-    .single()
+    .select() // returns the data row just created into an array
+    .single() // unwraps into into an object
     return NextResponse.json({ goal: data, error }, { status: error ? 400 : 201 })
 }
 
@@ -33,7 +33,7 @@ export async function GET() {
     .from('goals')
     .select('*')
     .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false }) // order from newest to oldest
   return NextResponse.json({ goals: data, error }, { status: error ? 400 : 200 })
 }
 
@@ -69,7 +69,7 @@ export async function PATCH(request) {
   return NextResponse.json({ goal: data, error }, { status: error ? 400 : 200 })
 }
 
-// DELETE a goal by ID: delete the goal but use set null so the tasks with the goal_id become null and are treated as miscellaneous
+// DELETE a goal by ID
 export async function DELETE(request) {
   const { supabase, user } = await getUser()
   if (!user) {
